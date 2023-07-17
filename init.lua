@@ -1,5 +1,7 @@
 --- Транслитерация кириллицы в латиницу
 --
+local utf8 = require('utf8')
+
 local RuTranslit = {
   ['а'] = 'a',
   ['б'] = 'b',
@@ -75,7 +77,7 @@ local RuTranslit = {
 -- @return result Строка после перевода
 local function translit(str)
   local result = ''
-  for i = 1,  utf8.len(str) do
+  for i = 1, utf8.len(str) do
     local char = utf8.sub(str, i, i)
     if RuTranslit[char] then
       result = result .. RuTranslit[char]
