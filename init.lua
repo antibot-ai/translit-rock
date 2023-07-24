@@ -74,15 +74,28 @@ local RuTranslit = {
 --- Переводит буквы кириллицы в латиницу
 --
 -- @param str Строка для перевода
+-- @param opts Опции
 -- @return result Строка после перевода
-local function translit(str)
+local function translit(str, opts)
+  opts = opts or {}
+
   local result = ''
   for i = 1, utf8.len(str) do
     local char = utf8.sub(str, i, i)
     if RuTranslit[char] then
       result = result .. RuTranslit[char]
     else
-      result = result .. char
+      if opts.invalid_char_replacement then
+        -- Замена символа за пределами ascii
+        if string.byte(char, 2) then
+          result = result .. opts.invalid_char_replacement
+        else
+          -- Замена специального символа (знак препинания или управляющий символ)
+          result = result .. char:gsub('[%p%c]', opts.invalid_char_replacement)
+        end
+      else
+        result = result .. char
+      end
     end
   end
 
