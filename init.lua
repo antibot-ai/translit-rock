@@ -90,8 +90,8 @@ local function translit(str, opts)
         if string.byte(char, 2) then
           result = result .. opts.invalid_char_replacement
         else
-          -- Замена специального символа (знак препинания, пробел или управляющий символ)
-          result = result .. char:gsub('[%p%c%s]', opts.invalid_char_replacement)
+          -- Замена специального символа (знак препинания, пробел, управляющий символ или '_')
+          result = result .. char:gsub('[%p%c%s_]', opts.invalid_char_replacement)
         end
       else
         result = result .. char
