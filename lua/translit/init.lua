@@ -1,6 +1,9 @@
 --- Транслитерация кириллицы в латиницу
 --
+-- @module translit
+
 local utf8 = require('utf8')
+local translit
 
 local RuTranslit = {
   ['а'] = 'a',
@@ -71,12 +74,16 @@ local RuTranslit = {
   ['Я'] = 'Ya',
 }
 
---- Переводит буквы кириллицы в латиницу
+--- Переводит строку кириллицы в латиницу
 --
 -- @param str Строка для перевода
--- @param opts Опции
--- @return result Строка после перевода
-local function translit(str, opts)
+-- @param[opt] opts Опции
+-- @param opts.invalid_char_replacement (string): Символ, который заменит специальные символы
+-- @return result Строка
+-- @usage
+  -- local str = translit('Привет, Мир!')
+  -- print(str) -- Privet, Mir!
+function translit(str, opts)
   opts = opts or {}
 
   local result = ''
@@ -90,8 +97,8 @@ local function translit(str, opts)
         if string.byte(char, 2) then
           result = result .. opts.invalid_char_replacement
         else
-          -- Замена специального символа (знак препинания, пробел или управляющий символ)
-          result = result .. char:gsub('[%p%c%s]', opts.invalid_char_replacement)
+          -- Замена специального символа (знак препинания, пробел, управляющий символ или '_')
+          result = result .. char:gsub('[%p%c%s_]', opts.invalid_char_replacement)
         end
       else
         result = result .. char
@@ -102,6 +109,4 @@ local function translit(str, opts)
   return result
 end
 
---- translit
--- @table export
 return translit
