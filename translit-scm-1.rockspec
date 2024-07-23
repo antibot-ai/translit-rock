@@ -1,7 +1,7 @@
 package = 'translit'
 version = 'scm-1'
 description = {
-  summary = 'Transliterate Cyrillic script to Latin script',
+  summary = 'Transliterate Cyrillic text to Latin text',
   license = 'MIT'
 }
 source  = {
@@ -10,7 +10,7 @@ source  = {
 build = {
   type = 'builtin',
   modules = {
-    ['translit'] = 'init.lua',
+    [package] = 'lua/'..package..'/init.lua'
   }
 }
 dependencies = {
